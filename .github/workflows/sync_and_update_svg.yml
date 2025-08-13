@@ -4,7 +4,7 @@ name: Sync Garmin Data And Update svg
 on:
   workflow_dispatch:
   schedule:
-    - cron: '10 1,13 * * *'
+    - cron: '5 1,13 * * *'
   push:
     branches:
       - master
@@ -49,9 +49,9 @@ jobs:
       - name: Set Timezone
         uses: szenius/set-timezone@v1.2
         with:
-          timezoneLinux: "Asia/Singapore"
-          timezoneMacos: "Asia/Singapore"
-          timezoneWindows: "Singapore Standard Time"
+          timezoneLinux: "Asia/Shanghai"
+          timezoneMacos: "Asia/Shanghai"
+          timezoneWindows: "Shanghai Standard Time"
 
       - name: Checkout
         uses: actions/checkout@v4

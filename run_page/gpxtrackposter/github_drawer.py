@@ -102,9 +102,6 @@ class GithubDrawer(TracksDrawer):
                     "Nov",
                     "Dec",
                 ]
-            km_or_mi = "mi"
-            if self.poster.units == "metric":
-                km_or_mi = "km"
             dr.add(
                 dr.text(
                     f"{year}",
@@ -117,7 +114,7 @@ class GithubDrawer(TracksDrawer):
 
             dr.add(
                 dr.text(
-                    f"{year_length} {km_or_mi}",
+                    f"{year_length} {self.poster.u()}",
                     insert=(offset.tuple()[0] + 165, offset.tuple()[1] + 5),
                     fill=self.poster.colors["text"],
                     dominant_baseline="hanging",
@@ -158,11 +155,18 @@ class GithubDrawer(TracksDrawer):
                     if date_title in self.poster.tracks_by_date:
                         tracks = self.poster.tracks_by_date[date_title]
                         length = sum([t.length for t in tracks])
-                        color = self.color2(
-                            self.poster.length_range_by_date, length
+                        distance1 = self.poster.special_distance["special_distance"]
+                        distance2 = self.poster.special_distance["special_distance2"]
+                        has_special = distance1 < self.poster.m2u(length) < distance2
+                        color = self.color(
+                            self.poster.length_range_by_date, length, has_special
                         )
+                        if self.poster.m2u(length) >= distance2:
+                            color = self.poster.colors.get(
+                                "special2"
+                            ) or self.poster.colors.get("special")
                         str_length = format_float(self.poster.m2u(length))
-                        date_title = f"{date_title} {str_length} {km_or_mi}"
+                        date_title = f"{date_title} {str_length} {self.poster.u()}"
 
                     rect = dr.rect((rect_x, rect_y), dom, fill=color)
                     rect.set_desc(title=date_title)
